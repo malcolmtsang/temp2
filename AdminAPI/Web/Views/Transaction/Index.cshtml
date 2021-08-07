@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Transaction>
+
+@{
+    ViewData["Title"] = "View Transaction";
+}
+
+<h1 class="display-4">View Cutomer Transction</h1>
+<div class="row">
+    <div class="col-md-4">
+        <form action="Index">
+            <div validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label for="AccountNumber" class="control-label">Account Number</label>
+                <input for="AccountNumber" name="AccountNumber" class="form-control" />
+                @Html.ValidationMessage("Error", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label for="StartDate" class="control-label">Start Date</label>
+                <input for="StartDate" name="StartDate" type="date" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="EndDate" class="control-label">End Date</label>
+                <input for="EndDate" name="EndDate" type="date" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Filter" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+@if (Model != null)
+{
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table">
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Acc No.</th>
+                    <th>Destination Acc No.</th>
+                    <th>Amount</th>
+                    <th>Comment</th>
+                    <th>Transaction Time</th>
+                </tr>
+                @foreach (var transaction in Model)
+                {
+                    <tr>
+                        @{
+                            string localTime = transaction.TransactionTimeUtc.ToLocalTime().ToString();
+                        }
+                        <th>@Html.DisplayFor(x => transaction.TransactionID)</th>
+                        <th>@Html.DisplayFor(x => transaction.TransactionType)</th>
+                        <th>@Html.DisplayFor(x => transaction.AccountNumber)</th>
+                        <th>@Html.DisplayFor(x => transaction.DestinationAccountNumber)</th>
+                        <th>@Html.DisplayFor(x => transaction.Amount)</th>
+                        <th>@Html.DisplayFor(x => transaction.Comment)</th>
+                        <th>@Html.DisplayFor(x => localTime)</th>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
